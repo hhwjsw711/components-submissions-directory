@@ -757,7 +757,7 @@ export async function runReviewOnRepo(
     defaultEnvModels: {
       anthropic: "claude-opus-4-6",
       openai: "gpt-5.5",
-      gemini: "gemini-3-pro",
+      gemini: "gemini-2.5-flash",
     },
   });
 

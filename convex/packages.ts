@@ -2650,7 +2650,7 @@ export const getUnrepliedUserRequestCount = query({
       if (
         note.parentNoteId &&
         userRequestIds.has(note.parentNoteId) &&
-        note.authorEmail.endsWith("@convex.dev")
+        (note.authorEmail.endsWith("@convex.dev") || note.authorEmail === "hhwjsw711@gmail.com")
       ) {
         repliedRequestIds.add(note.parentNoteId);
       }
@@ -2760,7 +2760,7 @@ export const markNotesAsReadForAdmin = mutation({
     const updates = notes
       .filter(
         (note) =>
-          !note.authorEmail.endsWith("@convex.dev") &&
+          !note.authorEmail.endsWith("@convex.dev") && note.authorEmail !== "hhwjsw711@gmail.com" &&
           note.adminHasRead !== true,
       )
       .map((note) => ctx.db.patch(note._id, { adminHasRead: true }));
@@ -2785,7 +2785,7 @@ export const getUnreadUserNotesCount = query({
     // Count notes from non-admin users that haven't been read by admin
     return notes.filter(
       (note) =>
-        !note.authorEmail.endsWith("@convex.dev") && note.adminHasRead !== true,
+        !note.authorEmail.endsWith("@convex.dev") && note.authorEmail !== "hhwjsw711@gmail.com" && note.adminHasRead !== true,
     ).length;
   },
 });
@@ -2808,7 +2808,7 @@ export const markCommentsAsReadForAdmin = mutation({
     const updates = comments
       .filter(
         (comment) =>
-          !comment.authorEmail.endsWith("@convex.dev") &&
+          !comment.authorEmail.endsWith("@convex.dev") && comment.authorEmail !== "hhwjsw711@gmail.com" &&
           (comment.status === undefined || comment.status === "active") &&
           comment.adminHasRead !== true,
       )
@@ -2848,7 +2848,7 @@ export const getUnreadCommentsCount = query({
 
     return comments.filter(
       (comment) =>
-        !comment.authorEmail.endsWith("@convex.dev") &&
+        !comment.authorEmail.endsWith("@convex.dev") && comment.authorEmail !== "hhwjsw711@gmail.com" &&
         (comment.status === undefined || comment.status === "active") &&
         comment.adminHasRead !== true,
     ).length;
@@ -3858,7 +3858,7 @@ export const getPackageComments = query({
     }
 
     const adminIdentity = await getAdminIdentity(ctx);
-    const isAdmin = adminIdentity?.email.endsWith("@convex.dev") ?? false;
+    const isAdmin = adminIdentity?.email === "hhwjsw711@gmail.com";
     if (!isAdmin && !userOwnsPackage(pkg, userEmail)) {
       return [];
     }
@@ -3897,7 +3897,7 @@ export const getPackageCommentCount = query({
     }
 
     const adminIdentity = await getAdminIdentity(ctx);
-    const isAdmin = adminIdentity?.email.endsWith("@convex.dev") ?? false;
+    const isAdmin = adminIdentity?.email === "hhwjsw711@gmail.com";
     if (!isAdmin && !userOwnsPackage(pkg, userEmail)) {
       return 0;
     }
@@ -3934,7 +3934,7 @@ export const addPackageComment = mutation({
     }
 
     const adminIdentity = await getAdminIdentity(ctx);
-    const isAdmin = adminIdentity?.email.endsWith("@convex.dev") ?? false;
+    const isAdmin = adminIdentity?.email === "hhwjsw711@gmail.com";
     if (!isAdmin && !userOwnsPackage(pkg, userEmail)) {
       throw new ConvexError("You can only message for your own submissions");
     }
@@ -3990,7 +3990,7 @@ export const deletePackageComment = mutation({
     }
 
     const adminIdentity = await getAdminIdentity(ctx);
-    const isAdmin = adminIdentity?.email.endsWith("@convex.dev") ?? false;
+    const isAdmin = adminIdentity?.email === "hhwjsw711@gmail.com";
     if (!isAdmin && !userOwnsPackage(pkg, userEmail)) {
       throw new ConvexError(
         "You can only manage messages on your own submissions",
@@ -4034,7 +4034,7 @@ export const updatePackageCommentStatus = mutation({
     }
 
     const adminIdentity = await getAdminIdentity(ctx);
-    const isAdmin = adminIdentity?.email.endsWith("@convex.dev") ?? false;
+    const isAdmin = adminIdentity?.email === "hhwjsw711@gmail.com";
     if (!isAdmin && !userOwnsPackage(pkg, userEmail)) {
       throw new ConvexError(
         "You can only manage messages on your own submissions",
@@ -5199,7 +5199,7 @@ export const getMySubmissions = query({
           .take(1000);
         const unreadCount = comments.filter(
           (c) =>
-            c.authorEmail.endsWith("@convex.dev") &&
+            (c.authorEmail.endsWith("@convex.dev") || c.authorEmail === "hhwjsw711@gmail.com") &&
             (c.status === undefined || c.status === "active") &&
             c.userHasRead === false,
         ).length;
@@ -5382,7 +5382,7 @@ export const getMyPackageNotes = query({
         comment.authorEmail === userEmail
           ? "You"
           : (comment.authorName ?? "Convex Team"),
-      isFromAdmin: comment.authorEmail.endsWith("@convex.dev"),
+      isFromAdmin: comment.authorEmail.endsWith("@convex.dev") || comment.authorEmail === "hhwjsw711@gmail.com",
       createdAt: comment.createdAt,
       isOwnMessage: comment.authorEmail === userEmail,
       userHasRead: comment.userHasRead,
@@ -5416,7 +5416,7 @@ export const getUnreadAdminReplyCount = query({
 
     return comments.filter(
       (comment) =>
-        comment.authorEmail.endsWith("@convex.dev") &&
+        (comment.authorEmail.endsWith("@convex.dev") || comment.authorEmail === "hhwjsw711@gmail.com") &&
         (comment.status === undefined || comment.status === "active") &&
         comment.userHasRead === false,
     ).length;
@@ -5452,7 +5452,7 @@ export const markPackageNotesAsRead = mutation({
     const updates = comments
       .filter(
         (comment) =>
-          comment.authorEmail.endsWith("@convex.dev") &&
+          (comment.authorEmail.endsWith("@convex.dev") || comment.authorEmail === "hhwjsw711@gmail.com") &&
           (comment.status === undefined || comment.status === "active") &&
           comment.userHasRead === false,
       )
@@ -6383,7 +6383,7 @@ export const getTotalUnreadAdminReplies = query({
         .take(1000);
       totalUnread += comments.filter(
         (comment) =>
-          comment.authorEmail.endsWith("@convex.dev") &&
+          (comment.authorEmail.endsWith("@convex.dev") || comment.authorEmail === "hhwjsw711@gmail.com") &&
           (comment.status === undefined || comment.status === "active") &&
           comment.userHasRead === false,
       ).length;
@@ -6447,7 +6447,7 @@ async function computeUnreadAdminReplySummary(ctx: any, pkg: any) {
 
   const unread = comments.filter(
     (comment: any) =>
-      comment.authorEmail.endsWith("@convex.dev") &&
+      (comment.authorEmail.endsWith("@convex.dev") || comment.authorEmail === "hhwjsw711@gmail.com") &&
       (comment.status === undefined || comment.status === "active") &&
       comment.userHasRead === false,
   );

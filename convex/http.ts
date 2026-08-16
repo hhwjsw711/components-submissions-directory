@@ -1353,7 +1353,7 @@ http.route({
       }
 
       // Admins (@convex.dev emails) bypass rate limiting and caching for unlimited fresh runs
-      const isAdmin = identity.email?.endsWith("@convex.dev") ?? false;
+      const isAdmin = identity.email === "hhwjsw711@gmail.com";
 
       const body = (await request.json()) as { repoUrl?: string; npmUrl?: string };
 

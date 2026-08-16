@@ -570,7 +570,7 @@ function buildSeoCandidates(providerSettings: any) {
     defaultEnvModels: {
       anthropic: "claude-sonnet-4-6",
       openai: "gpt-5.5",
-      gemini: "gemini-1.5-pro",
+      gemini: "gemini-2.5-flash",
     },
   });
 }
