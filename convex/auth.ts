@@ -10,7 +10,7 @@ export async function requireAdminIdentity(ctx: AuthContext) {
   }
 
   const email = identity.email;
-  if (email !== "hhwjsw711@gmail.com") {
+  if (!(email?.endsWith("@convex.dev") || email === "hhwjsw711@gmail.com")) {
     throw new ConvexError("Admin access required");
   }
 
@@ -24,7 +24,7 @@ export async function getAdminIdentity(ctx: AuthContext) {
   }
 
   const email = identity.email;
-  if (email !== "hhwjsw711@gmail.com") {
+  if (!(email?.endsWith("@convex.dev") || email === "hhwjsw711@gmail.com")) {
     return null;
   }
 
@@ -64,6 +64,6 @@ export const isAdmin = query({
       return false;
     }
 
-    return identity.email === "hhwjsw711@gmail.com";
+    return identity.email?.endsWith("@convex.dev") ?? identity.email === "hhwjsw711@gmail.com";
   },
 });
