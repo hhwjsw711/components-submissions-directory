@@ -64,6 +64,6 @@ export const isAdmin = query({
       return false;
     }
 
-    return identity.email?.endsWith("@convex.dev") ?? identity.email === "hhwjsw711@gmail.com";
+    return identity.email?.endsWith("@convex.dev") || identity.email === "hhwjsw711@gmail.com";
   },
 });
